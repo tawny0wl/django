@@ -78,7 +78,8 @@ class DatabaseIntrospection(BaseDatabaseIntrospection):
                 AND pg_catalog.pg_table_is_visible(c.oid)
         """, [table_name])
         field_map = {line[0]: line[1:] for line in cursor.fetchall()}
-        cursor.execute("SELECT * FROM %s LIMIT 1" % self.connection.ops.quote_name(table_name))
+        cursor.execute("SELECT * FROM %s LIMIT 1" % self.connection.ops.quote_name(table_name)) 
+        # An error with quotation marks may occur. You can add something smarter then .replace('"','')  to make it work.
         return [
             FieldInfo(
                 line.name,
